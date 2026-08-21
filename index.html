@@ -687,94 +687,103 @@
 
     async function signup() {
 
-      const name =
-        document.getElementById("signupName").value.trim();
+  const name =
+    document.getElementById("signupName").value.trim();
 
-      const email =
-        document.getElementById("signupEmail").value.trim();
+  const email =
+    document.getElementById("signupEmail").value.trim();
 
-      const password =
-        document.getElementById("signupPassword").value;
-
-
-      if (!name || !email || !password) {
-
-        showMessage(
-          "signupMessage",
-          "Please complete all fields.",
-          "error"
-        );
-
-        return;
-      }
+  const password =
+    document.getElementById("signupPassword").value;
 
 
-      if (password.length < 6) {
+  if (!name || !email || !password) {
 
-        showMessage(
-          "signupMessage",
-          "Password must contain at least 6 characters.",
-          "error"
-        );
+    showMessage(
+      "signupMessage",
+      "Please complete all fields.",
+      "error"
+    );
 
-        return;
-      }
-
-
-      const button =
-        document.getElementById("signupButton");
-
-      button.classList.add("loading");
-      button.textContent = "Creating account...";
+    return;
+  }
 
 
-      try {
+  if (password.length < 6) {
 
-        const { data, error } =
-          await supabaseClient.auth.signUp({
+    showMessage(
+      "signupMessage",
+      "Password must contain at least 6 characters.",
+      "error"
+    );
 
-            email: email,
-
-            password: password,
-
-            options: {
-              data: {
-                full_name: name
-              }
-            }
-
-          });
+    return;
+  }
 
 
-        if (error) {
-          throw error;
+  const button =
+    document.getElementById("signupButton");
+
+  button.classList.add("loading");
+  button.textContent = "Creating account...";
+
+
+  try {
+
+    const { data, error } =
+      await supabaseClient.auth.signUp({
+
+        email: email,
+
+        password: password,
+
+        options: {
+
+          data: {
+            full_name: name
+          },
+
+          emailRedirectTo:
+            "https://merah261.github.io/CFDs-Analyse/"
+
         }
 
-
-        window.location.href = "dashboard.html";
-
-
-        document.getElementById("signupName").value = "";
-        document.getElementById("signupEmail").value = "";
-        document.getElementById("signupPassword").value = "";
+      });
 
 
-      } catch (error) {
-
-        showMessage(
-          "signupMessage",
-          error.message || "Unable to create account.",
-          "error"
-        );
-
-      } finally {
-
-        button.classList.remove("loading");
-        button.textContent = "Create Account";
-
-      }
-
+    if (error) {
+      throw error;
     }
+
+
+    showMessage(
+      "signupMessage",
+      "Account created successfully. Please check your email and confirm your account.",
+      "success"
+    );
+
+
+    document.getElementById("signupName").value = "";
+    document.getElementById("signupEmail").value = "";
+    document.getElementById("signupPassword").value = "";
+
+
+  } catch (error) {
+
+    showMessage(
+      "signupMessage",
+      error.message || "Unable to create account.",
+      "error"
+    );
+
+  } finally {
+
+    button.classList.remove("loading");
+    button.textContent = "Create Account";
+
+  }
+
+}
 
 
     /* =========================
