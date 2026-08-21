@@ -714,43 +714,40 @@
     /* ==========================
        CHECK LOGIN
     ========================== */
+async function checkUser() {
 
-    async function checkUser() {
+  const { data, error } =
+    await supabaseClient.auth.getSession();
 
-      const { data, error } =
-        await supabaseClient.auth.getSession();
+  if (error || !data.session) {
 
+    window.location.href = "index.html";
 
-      if (error || !data.session) {
+    return;
+  }
 
-        window.location.href = "index.html";
+  const user = data.session.user;
 
-        return;
+  const userEmail =
+    document.getElementById("userEmail");
 
-      }
+  if (userEmail) {
+    userEmail.textContent =
+      user.email || "";
+  }
 
+  const welcomeTitle =
+    document.getElementById("welcomeTitle");
 
-      const user =
-        data.session.user;
+  const name =
+    user.user_metadata?.full_name;
 
-
-      document.getElementById("userEmail")
-        .textContent = user.email;
-
-
-      const name =
-        user.user_metadata?.full_name;
-
-
-      if (name) {
-
-        document.getElementById("welcomeTitle")
-          .textContent =
-          "Welcome, " + name;
-
-      }
-
-    }
+  if (welcomeTitle && name) {
+    welcomeTitle.textContent =
+      "Welcome, " + name;
+  }
+}
+     
 
 
     /* ==========================
