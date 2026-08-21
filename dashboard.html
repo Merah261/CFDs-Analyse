@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>CFDs-Analyse | Dashboard</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #07111f;
+      color: white;
+      min-height: 100vh;
+    }
+
+    /* NAVBAR */
+
+    nav {
+      height: 72px;
+      padding: 0 6%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #1e293b;
+      background: #091525;
+    }
+
+    .logo {
+      font-size: 23px;
+      font-weight: 700;
+    }
+
+    .logo span {
+      color: #38bdf8;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .user-email {
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    .logout-btn {
+      padding: 9px 16px;
+      border-radius: 7px;
+      border: 1px solid #334155;
+      background: transparent;
+      color: white;
+      cursor: pointer;
+    }
+
+    .logout-btn:hover {
+      background: #1e293b;
+    }
+
+    /* MAIN */
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 35px 20px;
+    }
+
+    .welcome {
+      margin-bottom: 30px;
+    }
+
+    .welcome h1 {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .welcome p {
+      color: #94a3b8;
+    }
+
+    /* CARDS */
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .card {
+      background: #101d2d;
+      border: 1px solid #26384d;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .card-title {
+      color: #94a3b8;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .card-value {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .blue {
+      color: #38bdf8;
+    }
+
+    .green {
+      color: #22c55e;
+    }
+
+    /* CALCULATOR */
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 20px;
+    }
+
+    .calculator,
+    .results-panel {
+      background: #101d2d;
+      border: 1px solid #26384d;
+      border-radius: 14px;
+      padding: 25px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .section-description {
+      color: #64748b;
+      font-size: 13px;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      color: #cbd5e1;
+      font-size: 13px;
+      margin-bottom: 7px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 7px;
+      border: 1px solid #334155;
+      background: #07111f;
+      color: white;
+      outline: none;
+      font-size: 14px;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #38bdf8;
+    }
+
+    .calculate-btn {
+      width: 100%;
+      padding: 14px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 8px;
+      background: #2563eb;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .calculate-btn:hover {
+      background: #1d4ed8;
+    }
+
+    /* RESULTS */
+
+    .result {
+      padding: 16px;
+      margin-bottom: 12px;
+      border-radius: 9px;
+      background: #07111f;
+      border: 1px solid #1e293b;
+    }
+
+    .result-label {
+      color: #64748b;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .result-value {
+      font-size: 21px;
+      font-weight: 700;
+    }
+
+    .lot-result {
+      border-color: #2563eb;
+    }
+
+    .lot-result .result-value {
+      color: #38bdf8;
+      font-size: 28px;
+    }
+
+    .sl-result .result-value {
+      color: #ef4444;
+    }
+
+    .tp-result .result-value {
+      color: #22c55e;
+    }
+
+    /* INFO */
+
+    .risk-info {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 9px;
+      background: #0c1d35;
+      border: 1px solid #1e3a5f;
+      color: #93c5fd;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 950px) {
+
+      .cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+
+      nav {
+        padding: 0 18px;
+      }
+
+      .user-email {
+        display: none;
+      }
+
+      .container {
+        padding: 25px 15px;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .welcome h1 {
+        font-size: 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+
+  <nav>
+
+    <div class="logo">
+      CFDs<span>-Analyse</span>
+    </div>
+
+    <div class="nav-right">
+
+      <div class="user-email" id="userEmail">
+        Loading...
+      </div>
+
+      <button
+        class="logout-btn"
+        onclick="logout()"
+      >
+        Log Out
+      </button>
+
+    </div>
+
+  </nav>
+
+
+  <!-- MAIN -->
+
+  <main class="container">
+
+    <div class="welcome">
+
+      <h1 id="welcomeTitle">
+        Trading Dashboard
+      </h1>
+
+      <p>
+        Calculate your risk and position size before entering a trade.
+      </p>
+
+    </div>
+
+
+    <!-- SUMMARY CARDS -->
+
+    <div class="cards">
+
+      <div class="card">
+
+        <div class="card-title">
+          Account Balance
+        </div>
+
+        <div class="card-value">
+          $5,000
+        </div>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="card-title">
+          Risk Per Trade
+        </div>
+
+        <div class="card-value blue">
+          1.00%
+        </div>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="card-title">
+          Maximum Risk
+        </div>
+
+        <div class="card-value">
+          $50
+        </div>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="card-title">
+          Risk / Reward
+        </div>
+
+        <div class="card-value green">
+          1 : 3
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- CALCULATOR + RESULTS -->
+
+    <div class="main-grid">
+
+
+      <!-- CALCULATOR -->
+
+      <section class="calculator">
+
+        <h2 class="section-title">
+          Risk Calculator
+        </h2>
+
+        <p class="section-description">
+          Enter your trade information. CFDs-Analyse will calculate
+          your maximum risk, position size, Stop Loss and Take Profit
+          levels.
+        </p>
+
+
+        <div class="form-grid">
+
+          <div class="form-group">
+
+            <label>
+              Account Balance ($)
+            </label>
+
+            <input
+              type="number"
+              id="balance"
+              value="5000"
+              min="0"
+              step="0.01"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Risk Per Trade (%)
+            </label>
+
+            <input
+              type="number"
+              id="riskPercent"
+              value="1"
+              min="0.1"
+              max="100"
+              step="0.1"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Direction
+            </label>
+
+            <select id="direction">
+
+              <option value="buy">
+                BUY / LONG
+              </option>
+
+              <option value="sell">
+                SELL / SHORT
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Entry Price
+            </label>
+
+            <input
+              type="number"
+              id="entry"
+              value="100"
+              step="any"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Stop Loss Price
+            </label>
+
+            <input
+              type="number"
+              id="sl"
+              value="99"
+              step="any"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Tick Size
+            </label>
+
+            <input
+              type="number"
+              id="tickSize"
+              value="0.01"
+              step="any"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Tick Value per 1 Lot ($)
+            </label>
+
+            <input
+              type="number"
+              id="tickValue"
+              value="1"
+              step="any"
+            >
+
+          </div>
+
+        </div>
+
+
+        <button
+          class="calculate-btn"
+          onclick="calculateTrade()"
+        >
+          Calculate Trade
+        </button>
+
+
+        <div class="risk-info">
+
+          <strong>Risk Management:</strong><br>
+
+          The calculator uses your account balance and selected
+          risk percentage to determine the maximum amount that can
+          be lost if Stop Loss is reached.
+
+          <br><br>
+
+          Example: $5,000 × 1% = $50 maximum risk.
+
+        </div>
+
+      </section>
+
+
+      <!-- RESULTS -->
+
+      <section class="results-panel">
+
+        <h2 class="section-title">
+          Trade Results
+        </h2>
+
+
+        <div class="result lot-result">
+
+          <div class="result-label">
+            Recommended Lot Size
+          </div>
+
+          <div
+            class="result-value"
+            id="lotSize"
+          >
+            0.00
+          </div>
+
+        </div>
+
+
+        <div class="result">
+
+          <div class="result-label">
+            Maximum Risk
+          </div>
+
+          <div
+            class="result-value"
+            id="riskAmount"
+          >
+            $0.00
+          </div>
+
+        </div>
+
+
+        <div class="result">
+
+          <div class="result-label">
+            Stop Loss Distance
+          </div>
+
+          <div
+            class="result-value"
+            id="slDistance"
+          >
+            0.00
+          </div>
+
+        </div>
+
+
+        <div class="result sl-result">
+
+          <div class="result-label">
+            Stop Loss
+          </div>
+
+          <div
+            class="result-value"
+            id="resultSL"
+          >
+            0.00
+          </div>
+
+        </div>
+
+
+        <div class="result tp-result">
+
+          <div class="result-label">
+            TP1 — 1R
+          </div>
+
+          <div
+            class="result-value"
+            id="tp1"
+          >
+            0.00
+          </div>
+
+        </div>
+
+
+        <div class="result tp-result">
+
+          <div class="result-label">
+            TP2 — 2R
+          </div>
+
+          <div
+            class="result-value"
+            id="tp2"
+          >
+            0.00
+          </div>
+
+        </div>
+
+
+        <div class="result tp-result">
+
+          <div class="result-label">
+            TP3 — 3R
+          </div>
+
+          <div
+            class="result-value"
+            id="tp3"
+          >
+            0.00
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+
+  <!-- SUPABASE -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+
+    const SUPABASE_URL =
+      "https://ohhjucsblenlvulkawdz.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_m9Nn-FhTvcPP23DuThTkTA_KgBk97HK";
+
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+      );
+
+
+    /* ==========================
+       CHECK LOGIN
+    ========================== */
+
+    async function checkUser() {
+
+      const { data, error } =
+        await supabaseClient.auth.getSession();
+
+
+      if (error || !data.session) {
+
+        window.location.href = "index.html";
+
+        return;
+
+      }
+
+
+      const user =
+        data.session.user;
+
+
+      document.getElementById("userEmail")
+        .textContent = user.email;
+
+
+      const name =
+        user.user_metadata?.full_name;
+
+
+      if (name) {
+
+        document.getElementById("welcomeTitle")
+          .textContent =
+          "Welcome, " + name;
+
+      }
+
+    }
+
+
+    /* ==========================
+       LOG OUT
+    ========================== */
+
+    async function logout() {
+
+      await supabaseClient.auth.signOut();
+
+      window.location.href = "index.html";
+
+    }
+
+
+    /* ==========================
+       CALCULATOR
+    ========================== */
+
+    function calculateTrade() {
+
+      const balance =
+        parseFloat(
+          document.getElementById("balance").value
+        );
+
+
+      const riskPercent =
+        parseFloat(
+          document.getElementById("riskPercent").value
+        );
+
+
+      const direction =
+        document.getElementById("direction").value;
+
+
+      const entry =
+        parseFloat(
+          document.getElementById("entry").value
+        );
+
+
+      const sl =
+        parseFloat(
+          document.getElementById("sl").value
+        );
+
+
+      const tickSize =
+        parseFloat(
+          document.getElementById("tickSize").value
+        );
+
+
+      const tickValue =
+        parseFloat(
+          document.getElementById("tickValue").value
+        );
+
+
+      if (
+        !isFinite(balance) ||
+        !isFinite(riskPercent) ||
+        !isFinite(entry) ||
+        !isFinite(sl) ||
+        !isFinite(tickSize) ||
+        !isFinite(tickValue)
+      ) {
+
+        alert("Please enter valid numbers.");
+
+        return;
+
+      }
+
+
+      if (
+        balance <= 0 ||
+        riskPercent <= 0 ||
+        tickSize <= 0 ||
+        tickValue <= 0
+      ) {
+
+        alert("Please enter positive values.");
+
+        return;
+
+      }
+
+
+      const riskAmount =
+        balance * (riskPercent / 100);
+
+
+      const slDistance =
+        Math.abs(entry - sl);
+
+
+      if (slDistance === 0) {
+
+        alert(
+          "Entry and Stop Loss cannot be the same."
+        );
+
+        return;
+
+      }
+
+
+      const numberOfTicks =
+        slDistance / tickSize;
+
+
+      const riskPerLot =
+        numberOfTicks * tickValue;
+
+
+      const lotSize =
+        riskAmount / riskPerLot;
+
+
+      let tp1;
+      let tp2;
+      let tp3;
+
+
+      if (direction === "buy") {
+
+        tp1 =
+          entry + slDistance;
+
+        tp2 =
+          entry + slDistance * 2;
+
+        tp3 =
+          entry + slDistance * 3;
+
+      } else {
+
+        tp1 =
+          entry - slDistance;
+
+        tp2 =
+          entry - slDistance * 2;
+
+        tp3 =
+          entry - slDistance * 3;
+
+      }
+
+
+      document.getElementById("lotSize")
+        .textContent =
+        lotSize.toFixed(2);
+
+
+      document.getElementById("riskAmount")
+        .textContent =
+        "$" + riskAmount.toFixed(2);
+
+
+      document.getElementById("slDistance")
+        .textContent =
+        slDistance.toFixed(2);
+
+
+      document.getElementById("resultSL")
+        .textContent =
+        sl.toFixed(2);
+
+
+      document.getElementById("tp1")
+        .textContent =
+        tp1.toFixed(2);
+
+
+      document.getElementById("tp2")
+        .textContent =
+        tp2.toFixed(2);
+
+
+      document.getElementById("tp3")
+        .textContent =
+        tp3.toFixed(2);
+
+    }
+
+
+    /* ==========================
+       START
+    ========================== */
+
+    checkUser();
+
+    calculateTrade();
+
+  </script>
+
+</body>
+</html>
