@@ -20,8 +20,6 @@
       min-height: 100vh;
     }
 
-    /* NAVBAR */
-
     nav {
       width: 100%;
       padding: 22px 7%;
@@ -34,7 +32,6 @@
     .logo {
       font-size: 24px;
       font-weight: 700;
-      letter-spacing: 0.5px;
     }
 
     .logo span {
@@ -46,13 +43,16 @@
       gap: 12px;
     }
 
+    button {
+      font-family: inherit;
+    }
+
     .login-btn,
     .signup-btn {
       padding: 10px 18px;
       border-radius: 7px;
       font-size: 14px;
       cursor: pointer;
-      text-decoration: none;
     }
 
     .login-btn {
@@ -67,12 +67,10 @@
       border: 1px solid #2563eb;
     }
 
-    /* HERO */
-
     .hero {
       max-width: 1100px;
       margin: auto;
-      min-height: calc(100vh - 80px);
+      min-height: calc(100vh - 130px);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -117,28 +115,26 @@
       gap: 14px;
     }
 
-    .primary-btn {
-      padding: 15px 25px;
-      border-radius: 8px;
-      border: none;
-      background: #2563eb;
-      color: white;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
+    .primary-btn,
     .secondary-btn {
       padding: 15px 25px;
       border-radius: 8px;
-      border: 1px solid #334155;
-      background: transparent;
-      color: white;
       font-size: 16px;
       cursor: pointer;
     }
 
-    /* DASHBOARD PREVIEW */
+    .primary-btn {
+      border: none;
+      background: #2563eb;
+      color: white;
+      font-weight: 600;
+    }
+
+    .secondary-btn {
+      border: 1px solid #334155;
+      background: transparent;
+      color: white;
+    }
 
     .preview {
       width: 400px;
@@ -212,13 +208,11 @@
       color: #22c55e;
     }
 
-    /* LOGIN MODAL */
-
     .modal {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.75);
+      background: rgba(0,0,0,0.78);
       align-items: center;
       justify-content: center;
       padding: 20px;
@@ -248,8 +242,8 @@
     .close {
       position: absolute;
       right: 20px;
-      top: 18px;
-      font-size: 24px;
+      top: 15px;
+      font-size: 27px;
       cursor: pointer;
       color: #94a3b8;
     }
@@ -288,10 +282,35 @@
       color: white;
       font-weight: 600;
       cursor: pointer;
-      margin-top: 5px;
     }
 
-    /* FOOTER */
+    .message {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 7px;
+      font-size: 13px;
+      display: none;
+      line-height: 1.5;
+    }
+
+    .success {
+      display: block;
+      background: rgba(34,197,94,0.12);
+      color: #86efac;
+      border: 1px solid rgba(34,197,94,0.25);
+    }
+
+    .error {
+      display: block;
+      background: rgba(239,68,68,0.12);
+      color: #fca5a5;
+      border: 1px solid rgba(239,68,68,0.25);
+    }
+
+    .loading {
+      opacity: 0.7;
+      pointer-events: none;
+    }
 
     footer {
       text-align: center;
@@ -300,10 +319,7 @@
       font-size: 13px;
     }
 
-    /* MOBILE */
-
     @media (max-width: 850px) {
-
       .hero {
         flex-direction: column;
         text-align: center;
@@ -324,7 +340,6 @@
     }
 
     @media (max-width: 500px) {
-
       nav {
         padding: 18px;
       }
@@ -369,8 +384,6 @@
 
 <body>
 
-  <!-- NAVIGATION -->
-
   <nav>
 
     <div class="logo">
@@ -389,8 +402,6 @@
 
   </nav>
 
-
-  <!-- HERO SECTION -->
 
   <main class="hero">
 
@@ -426,8 +437,6 @@
     </section>
 
 
-    <!-- DASHBOARD PREVIEW -->
-
     <section class="preview">
 
       <div class="preview-header">
@@ -442,11 +451,9 @@
 
       </div>
 
-
       <div class="chart">
         <div class="chart-line"></div>
       </div>
-
 
       <div class="stats">
 
@@ -477,15 +484,13 @@
   </main>
 
 
-  <!-- LOGIN MODAL -->
+  <!-- LOGIN -->
 
   <div class="modal" id="loginModal">
 
     <div class="modal-box">
 
-      <div class="close" onclick="closeLogin()">
-        ×
-      </div>
+      <div class="close" onclick="closeLogin()">×</div>
 
       <h2>Welcome Back</h2>
 
@@ -495,40 +500,48 @@
 
       <div class="form-group">
         <label>Email</label>
+
         <input
           type="email"
           id="loginEmail"
           placeholder="Enter your email"
+          autocomplete="email"
         >
       </div>
 
       <div class="form-group">
         <label>Password</label>
+
         <input
           type="password"
           id="loginPassword"
           placeholder="Enter your password"
+          autocomplete="current-password"
         >
       </div>
 
-      <button class="submit-btn" onclick="login()">
+      <button
+        class="submit-btn"
+        id="loginButton"
+        onclick="login()"
+      >
         Log In
       </button>
+
+      <div id="loginMessage" class="message"></div>
 
     </div>
 
   </div>
 
 
-  <!-- SIGNUP MODAL -->
+  <!-- CREATE ACCOUNT -->
 
   <div class="modal" id="signupModal">
 
     <div class="modal-box">
 
-      <div class="close" onclick="closeSignup()">
-        ×
-      </div>
+      <div class="close" onclick="closeSignup()">×</div>
 
       <h2>Create Account</h2>
 
@@ -538,34 +551,46 @@
 
       <div class="form-group">
         <label>Name</label>
+
         <input
           type="text"
           id="signupName"
           placeholder="Your name"
+          autocomplete="name"
         >
       </div>
 
       <div class="form-group">
         <label>Email</label>
+
         <input
           type="email"
           id="signupEmail"
           placeholder="Your email"
+          autocomplete="email"
         >
       </div>
 
       <div class="form-group">
         <label>Password</label>
+
         <input
           type="password"
           id="signupPassword"
           placeholder="Create a password"
+          autocomplete="new-password"
         >
       </div>
 
-      <button class="submit-btn" onclick="signup()">
+      <button
+        class="submit-btn"
+        id="signupButton"
+        onclick="signup()"
+      >
         Create Account
       </button>
+
+      <div id="signupMessage" class="message"></div>
 
     </div>
 
@@ -577,58 +602,268 @@
   </footer>
 
 
+  <!-- SUPABASE -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <script>
 
+    const SUPABASE_URL =
+      "https://ohhjucsblenlvulkawdz.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_m9Nn-FhTvcPP23DuThTkTA_KgBk97HK";
+
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+      );
+
+
+    /* =========================
+       MODALS
+    ========================= */
+
     function openLogin() {
+
       document.getElementById("loginModal").style.display = "flex";
+
+      clearMessages();
+
     }
+
 
     function closeLogin() {
+
       document.getElementById("loginModal").style.display = "none";
+
     }
+
 
     function openSignup() {
+
       document.getElementById("signupModal").style.display = "flex";
+
+      clearMessages();
+
     }
+
 
     function closeSignup() {
+
       document.getElementById("signupModal").style.display = "none";
+
     }
 
-    function login() {
 
-      const email =
-        document.getElementById("loginEmail").value;
+    function clearMessages() {
 
-      const password =
-        document.getElementById("loginPassword").value;
+      document.getElementById("loginMessage").className = "message";
+      document.getElementById("loginMessage").textContent = "";
 
-      if (!email || !password) {
-        alert("Please enter your email and password.");
-        return;
-      }
+      document.getElementById("signupMessage").className = "message";
+      document.getElementById("signupMessage").textContent = "";
 
-      alert("Login system will be connected in the next step.");
     }
 
-    function signup() {
+
+    function showMessage(id, text, type) {
+
+      const element =
+        document.getElementById(id);
+
+      element.textContent = text;
+
+      element.className =
+        "message " + type;
+
+    }
+
+
+    /* =========================
+       CREATE ACCOUNT
+    ========================= */
+
+    async function signup() {
 
       const name =
-        document.getElementById("signupName").value;
+        document.getElementById("signupName").value.trim();
 
       const email =
-        document.getElementById("signupEmail").value;
+        document.getElementById("signupEmail").value.trim();
 
       const password =
         document.getElementById("signupPassword").value;
 
+
       if (!name || !email || !password) {
-        alert("Please complete all fields.");
+
+        showMessage(
+          "signupMessage",
+          "Please complete all fields.",
+          "error"
+        );
+
         return;
       }
 
-      alert("Account system will be connected in the next step.");
+
+      if (password.length < 6) {
+
+        showMessage(
+          "signupMessage",
+          "Password must contain at least 6 characters.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      const button =
+        document.getElementById("signupButton");
+
+      button.classList.add("loading");
+      button.textContent = "Creating account...";
+
+
+      try {
+
+        const { data, error } =
+          await supabaseClient.auth.signUp({
+
+            email: email,
+
+            password: password,
+
+            options: {
+              data: {
+                full_name: name
+              }
+            }
+
+          });
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        showMessage(
+          "signupMessage",
+          "Account created successfully. Check your email if confirmation is required.",
+          "success"
+        );
+
+
+        document.getElementById("signupName").value = "";
+        document.getElementById("signupEmail").value = "";
+        document.getElementById("signupPassword").value = "";
+
+
+      } catch (error) {
+
+        showMessage(
+          "signupMessage",
+          error.message || "Unable to create account.",
+          "error"
+        );
+
+      } finally {
+
+        button.classList.remove("loading");
+        button.textContent = "Create Account";
+
+      }
+
     }
+
+
+    /* =========================
+       LOGIN
+    ========================= */
+
+    async function login() {
+
+      const email =
+        document.getElementById("loginEmail").value.trim();
+
+      const password =
+        document.getElementById("loginPassword").value;
+
+
+      if (!email || !password) {
+
+        showMessage(
+          "loginMessage",
+          "Please enter your email and password.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      const button =
+        document.getElementById("loginButton");
+
+      button.classList.add("loading");
+      button.textContent = "Logging in...";
+
+
+      try {
+
+        const { data, error } =
+          await supabaseClient.auth.signInWithPassword({
+
+            email: email,
+
+            password: password
+
+          });
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        showMessage(
+          "loginMessage",
+          "Login successful! Your dashboard will be connected next.",
+          "success"
+        );
+
+
+        /*
+          We will redirect the user to the
+          CFDs-Analyse Dashboard in the next step.
+        */
+
+
+      } catch (error) {
+
+        showMessage(
+          "loginMessage",
+          error.message || "Invalid email or password.",
+          "error"
+        );
+
+      } finally {
+
+        button.classList.remove("loading");
+        button.textContent = "Log In";
+
+      }
+
+    }
+
+
+    /* =========================
+       CLOSE MODALS
+    ========================= */
 
     window.onclick = function(event) {
 
@@ -638,15 +873,40 @@
       const signupModal =
         document.getElementById("signupModal");
 
+
       if (event.target === loginModal) {
         closeLogin();
       }
+
 
       if (event.target === signupModal) {
         closeSignup();
       }
 
     };
+
+
+    /* =========================
+       CHECK CURRENT SESSION
+    ========================= */
+
+    async function checkSession() {
+
+      const { data } =
+        await supabaseClient.auth.getSession();
+
+      if (data.session) {
+
+        console.log(
+          "User is already logged in."
+        );
+
+      }
+
+    }
+
+
+    checkSession();
 
   </script>
 
